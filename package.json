@@ -1,0 +1,21 @@
+{
+  "name": "gus-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.test.js",
+    "zip": "zip -r lambda.zip . -x \"*.DS_Store\"",
+    "deploy": "rm -rf node_modules && npm i --production && npm run zip && aws s3 cp ./lambda.zip s3://cugos/gus-api/lambda.zip"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.85.0"
+  },
+  "devDependencies": {
+    "sinon": "^5.0.4",
+    "tape": "^4.9.0"
+  }
+}
