@@ -2,7 +2,7 @@
 
 API for converting a Google Spreadsheet into a GeoJSON object. Inspired by the [GUS map project](https://github.com/mapsam/gus), but made to be a more generic tool to enable any type of map rendering library. Have a look at the [example spreadsheet](https://docs.google.com/spreadsheets/d/1ctA2wUBHGjrBRhQlma_x2Q5oRsC5L85XALfhkezsQMY/edit#gid=0) and an [example request](https://e53r0f186h.execute-api.us-west-2.amazonaws.com/production/1ctA2wUBHGjrBRhQlma_x2Q5oRsC5L85XALfhkezsQMY) to the API.
 
-## Usage
+## Usage (hosted)
 
 The main endpoint is `GET /{spreadsheet id}` which gets your Google Spreadsheet and converts it into a GeoJSON response.
 
@@ -34,6 +34,40 @@ You'll see four possible responses:
 * 400 - missing ID parameter
 * 404 - could not find the spreadsheet, either it hasn't been published or the ID is incorrect
 * 5xx - an unexpected failure with the application
+
+## Usage (standalone)
+
+It is also possible to incorporate this functionality into an existing project, without the Node or AWS dependencies.  This may be a good idea if you are building something public-facing, and don't want to risk hammering @mapsam's AWS account with requests.
+
+**1 & 2. The spreadsheet**
+
+Structure and publish your spreadsheet as above.
+
+**3. Required functions**
+
+Either include provided [standalone.js](standalone.js) or copy its entire contents into your code.
+
+**4. Making the request**
+
+Call the `gus_api()` function with the spreadsheet ID and a callback function that will consume the GeoJSON it creates.  Here is a worked example for the Mapbox GL JS API:
+
+```JavaScript
+gus_api("1ctA2wUBHGjrBRhQlma_x2Q5oRsC5L85XALfhkezsQMY", function(jsondata) {
+  map.addSource('example-layer', {
+    type: 'geojson',
+    data: jsondata
+  });
+  map.addLayer({
+    'id': 'example-layer-points',
+    'type': 'symbol',
+    'source': 'example-layer',
+    layout: {
+      'icon-image': 'example-layer-icon',
+      'icon-allow-overlap': true,
+    }
+  });
+});
+```
 
 ## Develop
 
