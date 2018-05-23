@@ -114,6 +114,10 @@ const handler = (event, context, callback) => {
 
     const response = {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(gj)
     };
 
@@ -124,6 +128,10 @@ const handler = (event, context, callback) => {
 const ErrorHTTP = (code, message) => {
   return {
     statusCode: code,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
     body: JSON.stringify({ message: message })
   };
 };
